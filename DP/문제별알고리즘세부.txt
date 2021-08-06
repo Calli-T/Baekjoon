@@ -1,0 +1,12 @@
+11053 - LTS
+https://seungkwan.tistory.com/8
+https://namu.wiki/w/%EC%B5%9C%EC%9E%A5%20%EC%A6%9D%EA%B0%80%20%EB%B6%80%EB%B6%84%20%EC%88%98%EC%97%B4#s-3.1
+
+9251 - LCS (Longest Common Subsuquence, 최장 공통 부분수열)
+아예 실패
+https://blog.naver.com/pair00/120035649468
+https://gusdnd852.tistory.com/173 - LCS 점화식
+
+12865 - 냅색
+https://gsmesie692.tistory.com/113
+https://chanhuiseok.github.io/posts/improve-6/
