@@ -1,101 +1,56 @@
 #include <iostream>
-#include <vector>
-#include <stack>
-
-#define NOW [now.x][now.y]
-#define NEXT [next.x][next.y]
-
+#include <algorithm>
+#define MAX 20
 using namespace std;
 
-struct cod {
-	int x;
-	int y;
-};
+int r, c;
+char board[MAX][MAX];
+int alphabet[26] = { 0 };
+int dx[4] = { -1, 1, 0, 0 };
+int dy[4] = { 0, 0, -1, +1 };
+int max_path = 0;
 
-int dx[] = { 0, 0, 1, -1 };
-int dy[] = { 1, -1, 0, 0 };
+void dfs(int row, int col, int find_path) {
 
-int DFS(vector<vector<int>>& board, int x, int y) {
-	int R = board.size() - 2;
-	int C = board[0].size() - 2;
-	stack<cod> ST;
-	cod now, next;
-	vector<vector<bool>> visited;
-	vector<bool> alphabet(27, false);
-	int ans = 0;
-	bool isEnd;
+	max_path = max(find_path, max_path);
 
-	visited.resize(R + 2);
-	for (int i = 0; i < visited.size(); i++)
-		visited[i].resize(C + 2, false);
+	for (int i = 0; i < 4; ++i) {
+		int new_row = row + dx[i];
+		int new_col = col + dy[i];
 
-	
-	now.x = x;
-	now.y = y;
-	ST.push(now);
-	visited NOW = true;
-	alphabet[board NOW] = true;
+		if (0 <= new_row && new_row < r && 0 <= new_col && new_col < c) {
+			if (!alphabet[((int)board[new_row][new_col]) - 65]) {
 
-	while (!ST.empty()) {
-		cout << "1" << endl;
-		int size = ST.size();
-		ans = max(ans, size);
-		isEnd = true;
-		now = ST.top();
+				alphabet[((int)board[new_row][new_col]) - 65]++;
+				dfs(new_row, new_col, find_path + 1);
+				alphabet[((int)board[new_row][new_col]) - 65]--;
 
-		for (int i = 0; i < 4; i++) {
-			cout << "2" << endl;
-			next.x = now.x + dx[i];
-			next.y = now.y + dy[i];
-			if (!visited[next.x][next.y] && !alphabet[board NEXT] && board NEXT != 0) {
-				ST.push(next);
-				alphabet[board NEXT] = true;
-				visited NEXT = true;
-				isEnd = false;
-				break;
 			}
 		}
-
-		cout << "3" << endl;
-		if (isEnd) {
-			cout << "4" << endl;
-			now = ST.top();
-			alphabet[board NOW] = false;
-			ST.pop();
-		}
 	}
-
-	return ans;
 }
 
 int main(void) {
-	
-	int R, C;
-	vector<vector<int>> board;
-	string line;
-	int ans = 0;
-	
-	cin >> R >> C;
-	board.resize(R + 2);
-	for (int i = 0; i < board.size(); i++)
-		board[i].resize(C + 2, 0);
 
-	for (int i = 1; i <= R; i++) {
-		cin >> line;
-		for (int j = 1; j <= C; j++)
-			board[i][j] = (int)line[j - 1] - 64;
-	}
+	cin >> r >> c;
 
-	for (int i = 1; i <= R; i++) {
-		for (int j = 1; j <= C; j++) {
-			ans = max(ans, DFS(board, i, j));
+	for (int i = 0; i < r; ++i) {
+		for (int j = 0; j < c; ++j) {
+			cin >> board[i][j];
 		}
 	}
-	
-	cout << ans;
+
+	alphabet[((int)board[0][0]) - 65]++;
+
+	dfs(0, 0, 1);
+
+	cout << max_path << endl;
 
 	return 0;
+
 }
+
+
 // R행 C열의 2차원 배열
 // visited가 필요하다
 // 각 칸별로 싹 DFS를 적용할 필요가 있다
@@ -119,4 +74,142 @@ char text = 'Z';
 		}
 		cout << endl;
 	}
+*/
+
+/*
+int R = board.size() - 2;
+	int C = board[0].size() - 2;
+	stack<cod> ST;
+	cod now, next;
+	vector<vector<bool>> visited;
+	vector<bool> alphabet(27, false);
+	int ans = 0;
+	bool isEnd;
+
+	visited.resize(R + 2);
+	for (int i = 0; i < visited.size(); i++)
+		visited[i].resize(C + 2, false);
+
+
+	now.x = x;
+	now.y = y;
+	ST.push(now);
+	visited NOW = true;
+	alphabet[board NOW] = true;
+
+	while (!ST.empty()) {
+		int size = ST.size();
+		ans = max(ans, size);
+		isEnd = true;
+		now = ST.top();
+		printST(ST, board);
+
+		for (int i = 0; i < 4; i++) {
+			next.x = now.x + dx[i];
+			next.y = now.y + dy[i];
+			if (!visited[next.x][next.y] && !alphabet[board NEXT] && board NEXT != 0) {
+				ST.push(next);
+				alphabet[board NEXT] = true;
+				visited NEXT = true;
+				isEnd = false;
+				break;
+			}
+		}
+
+		if (isEnd) {
+			now = ST.top();
+			alphabet[board NOW] = false;
+			ST.pop();
+
+			//cout << (char)(board NOW + 64);
+		}
+	}
+
+	return ans;
+*/
+
+/*
+void printST(stack<cod> ST, vector<vector<int>>& board) {
+	vector<cod> temp;
+	cod now;
+	while (!ST.empty()) {
+		now = ST.top();
+		ST.pop();
+		temp.push_back(now);
+	}
+
+	for (int i = temp.size() - 1; i > -1; i--) {
+		now = temp[i];
+		cout << (char)(board NOW + 64) << " ";
+	}
+	cout << endl;
+}
+*/
+
+/*
+
+	for (int i = 0; i < 4; i++) {
+		next.x = R + dx[i];
+		next.y = C + dy[i];
+		cout << next.x << " " << next.y << endl;
+
+		for (int i = 1; i <= N; i++) {
+			if (board NEXT == path[i]) isPossible = false;
+		}
+		if (board NEXT == 64) isPossible = false;
+
+		if (!isPossible) continue;
+		else {
+			//cout << (char)(board NEXT + 64) << " ";
+			path[N + 1] = board NEXT;
+			DFS(next.x, next.y, N + 1);
+		}
+	}
+*/
+
+/*
+void printPath() {
+	for(int i = 1; i<path.size(); i++){
+		cout << (char)(path[i] + 64) << " ";
+	}
+	cout << endl;
+}
+*/
+
+/*
+20 20
+AYXWVUTSRQPONMLKJIHG
+YXWVUTSRQPONMLKJIHGF
+XWVUTSRQPONMLKJIHGFE
+WVUTSRQPONMLKJIHGFED
+VUTSRQPONMLKJIHGFEDC
+UTSRQPONMLKJIHGFEDCB
+TSRQPONMLKJIHGFEDCBA
+SRQPONMLKJIHGFEDCBAA
+RQPONMLKJIHGFEDCBAAA
+QPONMLKJIHGFEDCBAAAA
+PONMLKJIHGFEDCBAAAAA
+ONMLKJIHGFEDCBAAAAAA
+NMLKJIHGFEDCBAAAAAAA
+MLKJIHGFEDCBAAAAAAAA
+LKJIHGFEDCBAAAAAAAAA
+KJIHGFEDCBAAAAAAAAAA
+JIHGFEDCBAAAAAAAAAAA
+IHGFEDCBAAAAAAAAAAAA
+HGFEDCBAAAAAAAAAAAAA
+GFEDCBAAAAAAAAAAAAAA
+*/
+
+/*
+10 10
+PONMLKJIHG
+ONMLKJIHGF
+NMLKJIHGFE
+MLKJIHGFED
+LKJIHGFEDC
+KJIHGFEDCB
+JIHGFEDCBA
+IHGFEDCBAA
+HGFEDCBAAA
+GFEDCBAAAA
 */
