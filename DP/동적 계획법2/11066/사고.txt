@@ -1,3 +1,9 @@
+최종적으로 사용할 알고리즘은
+https://cocoon1787.tistory.com/317
+
+성공한 해석은
+https://data-make.tistory.com/402에서 찾아볼 수 있었
+
 실패했지만, 비슷한 알고리즘은 
 https://hydroponicglass.tistory.com/4
 에서 찾을 수 있었다.
