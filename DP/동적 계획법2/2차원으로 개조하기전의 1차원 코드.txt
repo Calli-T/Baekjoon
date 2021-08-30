@@ -4,7 +4,7 @@
 using namespace std;
 
 
-int N, M; //Ãß¿Í ±¸½½ÀÇ °³¼ö
+int N, M; //ì¶”ì™€ êµ¬ìŠ¬ì˜ ê°œìˆ˜
 int temp;
 vector<int> weight;
 vector<int> marble;
@@ -12,8 +12,7 @@ vector<bool> isMeasurable;
 
 void solution(int now, int total) {
 
-	total = total < 0 ? -total : total;
-	isMeasurable[total] = true;
+	isMeasurable[total + temp] = true;
 
 	if (now <= weight.size() - 1) {
 		solution(now + 1, total);
@@ -39,7 +38,7 @@ int main(void) {
 	temp = 0;
 	for (int i = 1; i < weight.size(); i++)
 		temp += weight[i];
-	isMeasurable.resize(temp + 1, false);
+	isMeasurable.resize(temp * 2 + 1, false);
 
 	solution(1, 0);
 
@@ -50,7 +49,7 @@ int main(void) {
 			continue;
 		}
 
-		if (isMeasurable[marble[i]]) cout << "Y ";
+		if (isMeasurable[temp + marble[i]]) cout << "Y ";
 		else cout << "N ";
 	}
 

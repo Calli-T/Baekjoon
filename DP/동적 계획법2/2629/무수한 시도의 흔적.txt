@@ -1,0 +1,214 @@
+/*
+올바른 코드
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+#define MAX 30*500
+
+int n, sinker[30], m, marble[7];
+bool visited[31][15001];
+
+void backtracking(int result, int depth) {
+	if (depth > n)return;
+	if (visited[depth][result])return;
+
+	visited[depth][result] = true;
+
+	backtracking(result + sinker[depth], depth + 1);
+	backtracking(abs(result - sinker[depth]), depth + 1);
+	backtracking(result, depth + 1);
+}
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	cin >> n;
+	for (int i = 0; i < n; ++i)
+		cin >> sinker[i];
+	cin >> m;
+	for (int i = 0; i < m; ++i) {
+		cin >> marble[i];
+	}
+	backtracking(0, 0);
+	for (int i = 0; i < m; ++i) {
+		if (marble[i] > MAX) {
+			cout << "N ";
+		}
+		else if (visited[n][marble[i]]) {
+			cout << "Y ";
+		}
+		else
+			cout << "N ";
+	}
+	cout << endl;
+	return 0;
+}*/
+
+/*
+* #include <iostream>
+#include <vector>
+
+using namespace std;
+
+
+int N, M; //추와 구슬의 개수
+int temp;
+vector<int> weight;
+vector<int> marble;
+vector<vector<bool>> isMeasurable;
+
+// Weight Number, Total weight
+void solution(int now, int total) {
+	//cout << total << endl;
+	//if (now >= weight.size()) return;
+	//if (total < 0) return;
+	if (isMeasurable[now][total + temp]) return;
+	//cout <<total << " " << isMeasurable[total + temp] << endl;
+	isMeasurable[now][total + temp] = true;
+
+	if (now <= N) {
+		//cout << now <<"1" <<endl;
+		solution(now + 1, total);
+		//cout << now << "2" << endl;
+		solution(now + 1, total + weight[now]);
+		//cout << now << "3" << endl;
+		solution(now + 1, total - weight[now]);
+	}
+}
+
+int main(void) {
+
+	weight.push_back(0);
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		cin >> temp;
+		weight.push_back(temp);
+	}
+	cin >> M;
+	for (int i = 0; i < M; i++) {
+		cin >> temp;
+		marble.push_back(temp);
+	}
+
+	temp = 0;
+	for (int i = 1; i < weight.size(); i++)
+		temp += weight[i];
+	isMeasurable.resize(N + 1);
+	for (int i = 0; i < N +2; i++)
+		isMeasurable[i].resize(temp * 2 + 1, false);
+
+	solution(1, 0);
+	
+	for (int i = temp + 1; i < isMeasurable[N].size(); i++) {
+		cout << isMeasurable[N][i] << " ";
+	}
+	cout << endl;
+	
+
+	for (int i = 0; i < marble.size(); i++) {
+		if (marble[i] > 15000) {
+			cout << "N ";
+			continue;
+		}
+
+		if (isMeasurable[N][temp + marble[i]]) cout << "Y ";
+		else cout << "N ";
+	}
+
+	return 0;
+}
+*/
+
+// 재귀식 처리가 가능하다
+// 가, 감산과 아무것도 안함 처리를 해야한다
+
+/*
+	for (int i = 0; i < weight.size(); i++) {
+		cout << weight[i] << " ";
+	}
+	cout << endl;
+	for (int i = 0; i < marble.size(); i++) {
+		cout << marble[i] << " ";
+	}
+	cout << endl;
+	for (int i = 0; i < isMeasurable.size(); i++) {
+		cout << isMeasurable[i] << " ";
+	}
+	cout << endl;
+	*/
+
+/*
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int N, M; //추와 구슬의 개수
+int temp;
+vector<int> weight;
+vector<int> marble;
+vector<bool> checkUse;
+vector<bool> ans;
+
+//확인하는 구슬의 현재 위치
+void backTrack(int now) {
+	
+}
+
+int main(void) {
+
+	
+
+	weight.push_back(0);
+	cin >> N;
+	for (int i = 0; i < N; i++){
+		cin >> temp;
+		weight.push_back(temp);
+	}
+	cin >> M;
+	for (int i = 0; i < M; i++) {
+		cin >> temp;
+		marble.push_back(temp);
+	}
+
+	//각각 구슬 사용 여부와, 정답유무이다
+	checkUse.resize(marble.size(), false);
+	temp = 0;
+	for (int i = 1; i < weight.size(); i++)
+		temp += weight[i];
+	ans.resize(temp + 1, false);
+
+
+	return 0;
+}*/
+
+// 얘도 DFS + DP + 백트래킹이다
+/* 잘못된 방법으로 시도
+DP.resize(N + 1);
+	temp = 0;
+	for (int i = 1; i < weight.size(); i++)
+		temp += weight[i];
+	for (int i = 0; i < N + 1; i++)
+		DP[i].resize(temp + 1, false);
+
+	for (int i = 1; i <= N; i++) {
+		for (int j = 1; j <= N - i; j++) {
+
+			for (int k = 1; k < i + j; k++) {
+				DP[j][i + j] = 0;
+			}
+
+		}
+	}
+*/
+
+/*
+//if (now == weight.size() || total>=isMeasurable.size()) return;
+	//if (now >  weight.size() - 1) return;
+	//cout << "now/total : " << weight[now] << "/"<< total << endl;
+	//cout << "weight[now]/isMeasurable[total] : " << weight[now] << "/" << isMeasurable[total] << endl;
+*/
+
+////https://ghdic.github.io/ps/boj-2629/
