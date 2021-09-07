@@ -119,6 +119,7 @@ int main(void) {
 	if (!visited[getOrder(board)]) move = -1;
 
 	cout << move;
+	cout << endl << getOrder(board) << endl;
 
 	return 0;
 }

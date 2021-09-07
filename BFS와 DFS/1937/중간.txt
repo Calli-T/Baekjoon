@@ -1,0 +1,105 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+#define NOW [now.r][now.c]
+#define NEXT [next.r][next.c]
+
+struct  cod {
+	int r;
+	int c;
+};
+
+int main(void) {
+
+	int n;
+	vector<vector<int>> bamboo;
+	vector<vector<int>> DP;
+	int ans = 1;
+	int size;
+
+	int dr[] = { 0,0,1,-1 };
+	int dc[] = { 1,-1,0,0 };
+
+	cin >> n;
+	bamboo.resize(n + 2);
+	for (int i = 0; i < n + 2; i++)
+		bamboo[i].resize(n + 2);
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= n; j++)
+			cin >> bamboo[i][j];
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			
+			stack<cod> ST;
+			cod now, next;
+			vector<vector<bool>> visited;
+
+			bool isEnd;
+			int temp = 1;
+			
+			//전처리
+			now.r = i;
+			now.c = j;
+			visited.resize(n + 2);
+			for (int i = 0; i < n + 2; i++)
+				visited[i].resize(n + 2, false);
+			DP.resize(n + 2);
+			for (int i = 0; i < n + 2; i++)
+				DP[i].resize(n + 2, false);
+
+			ST.push(now);
+			visited NOW = true;
+			temp = ST.size();
+			while (!ST.empty()) {
+
+				now = ST.top();
+				//cout << now.r << " " << now.c << " " << ST.size() << endl;
+				bool isEnd = true;
+
+				for (int i = 0; i < 4; i++) {
+					next.r = now.r + dr[i];
+					next.c = now.c + dc[i];
+					size = ST.size();
+					//cout << next.r << " " << next.c << " ! " << bamboo NEXT << endl;
+					//(i - 1)* n + j
+					if (bamboo NOW < bamboo NEXT) {
+						if (!(visited NEXT)) {
+							ST.push(next);
+							visited NEXT = true;
+							isEnd = false;
+							
+							temp = max(temp, size);
+							break;
+						}
+					}
+					
+				}
+
+				if (isEnd) ST.pop();
+
+			}
+
+			DP[i][j] = temp;
+			ans = max(ans, temp);
+
+		}
+	}
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			cout << DP[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	cout << ans;
+
+	return 0;
+}
+
+//방문한 곳을 다시 방문하지 않고 DP로 때우는 방식으로 해결
+//크기 조건 때문에 다시 더 오래살 수 있는 길이 나올 수가 없다
