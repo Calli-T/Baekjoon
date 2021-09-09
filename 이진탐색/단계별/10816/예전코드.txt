@@ -11,6 +11,11 @@ int main(void) {
 	vector<int> ans;
 	int temp;
 	int mid, left, right;
+	int lowerMid, lowerLeft, lowerRight;
+	int upperMid, upperLeft, upperRight;
+
+	std::ios_base::sync_with_stdio(false);
+	std::cin.tie(0);
 
 	cin >> N;
 	card.resize(N);
@@ -35,11 +40,18 @@ int main(void) {
 		while (left <= right) {
 			mid = (left + right) / 2;
 			if (card[mid] == list[i]) {
+
 				temp = 0;
-				while (card[mid] == list[i] && mid < N - 1) {
+				for (int j = mid;  j <= N - 1; j++) {
+					if (card[j] != list[i]) break;
 					temp++;
-					mid++;
 				}
+				for (int j = mid; j >=0; j--) {
+					if (card[j] != list[i]) break;
+					temp++;
+				}
+				temp--;
+
 				ans[i] = temp;
 
 				break;
