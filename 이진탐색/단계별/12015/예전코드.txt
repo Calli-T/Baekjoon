@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+#define INF 1000000
+
+// A는 배열
+// D는 해당 값까지의 LIS
+// D_first[k]는 D[i] = k인 값들중 가장작은 A[i]의 값
+// 각각의 i에 대해
+// 현재의 A[i]보다 작은 A[i]를 D_fisrt에서 찾는다. 오름차순이므로 이진정렬가능
+// D_first[mid]가 lower bound이고, mid + 1이 해당 기수의 D[i]값이다
+
+int main(void) {
+	int N;
+	vector<int> A;
+	vector<int> D;
+	vector<int> D_first;
+	int low, high, mid = 0;
+
+	cin >> N;
+	A.resize(N + 1);
+	D.resize(N + 1);
+	D_first.resize(N + 1, INF);
+	A[0] = 1;
+	for (int i = 1; i <= N; i++)
+		cin >> A[i];
+
+	for (int i = 1; i <= 6; i++) {
+
+		//lower bound 찾기
+		low = 1; //이번 A[i]값이 작다면, 1부터 어떤값도 연결불가능, A[i] >=1이 조건이므로 0뒤에는 가능하다
+		high = i - 1; //i이전까지의 LIS는 아무리 커도 i-1개
+		while (low <= high) {
+
+			mid = (low + high) / 2;
+			if (D_first[mid] < A[i]) {
+				low = mid + 1;
+			}
+			else {
+				high = mid - 1;
+			}
+
+		}
+		cout << mid << " ";
+		D[i] = mid + 1;
+
+
+		D_first[D[i]] = min(D_first[D[i]], A[i]);
+	}
+
+	cout << endl;
+	for (int i = 1; i <= N; i++)
+		cout << D[i] << " " << D_first[i] << endl;
+
+	cout << D[N - 1];
+
+	return 0;
+}
+/*
+8
+3 5 7 9 2 1 4 8
+*/
+//https://namu.wiki/w/%EC%B5%9C%EC%9E%A5%20%EC%A6%9D%EA%B0%80%20%EB%B6%80%EB%B6%84%20%EC%88%98%EC%97%B4#s-3.1
