@@ -1,0 +1,135 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+vector<vector<int>> adjMat; // adjacency matrix, 인접행렬
+vector<vector<int>> graph;
+int N;
+stack<int> ST;
+vector<int> path;
+
+bool isUnited();
+bool checkOutDegree();
+
+void DFS() {
+	bool isEnd;
+	int now;
+
+	ST.push(1);
+	path.push_back(1);
+	while (!ST.empty()) {
+		isEnd = true;
+		now = ST.top();
+		//cout << now << endl;
+		//cout << "무야호" << endl;
+		for (int i = 0; i < graph[now].size(); i++) {
+			//인접행렬의 경로가 1개 이상일 때
+			if (adjMat[now][graph[now][i]] != 0) {
+				ST.push(graph[now][i]);
+				isEnd = false;
+				adjMat[now][graph[now][i]]--;
+				adjMat[graph[now][i]][now]--;
+				path.push_back(graph[now][i]);
+				break;
+			}
+		}
+		if (isEnd) ST.pop();
+	}
+	
+	for (int i = 0; i < path.size(); i++) {
+		cout << path[i] << " ";
+	}
+	cout << endl;
+}
+
+int main(void) {
+	cin >> N;
+	adjMat.resize(N + 1);
+	for (int i = 0; i < N + 1; i++)
+		adjMat[i].resize(N + 1);
+	graph.resize(N + 1);
+	
+
+	for (int i = 1; i <= N; i++) {
+		for (int j = 1; j <= N; j++) {
+			cin >> adjMat[i][j];
+			if(adjMat[i][j])
+				graph[i].push_back(j);
+		}
+	}
+
+	/*
+	for (int i = 1; i <= N; i++) {
+		for (int j = 0; j < graph[i].size(); j++) {
+			cout << graph[i][j] << " ";
+		}
+		cout << endl;
+	}
+	*/
+		
+	//if (!isUnited() || !checkOutDegree()) {
+		//cout << "-1" << endl;
+	//}
+	//else {
+		//cout << "무야호" << endl;
+		DFS();
+		//cout << "무야호" << endl;
+//	}
+
+	return 0;
+}
+
+/*
+cout << endl;
+for (int i = 1; i <= N; i++) {
+	for (int j = 1; j <= N; j++) {
+		cout << graph[i][j] << " ";
+	}
+	cout << endl;
+}
+*/
+
+// 오일로 회로존재의 필요충분 조건
+// 1. 모든정점이 하나의 컴포넌트 안에 속해 있는가?
+bool isUnited() {
+	bool isEnd;
+	int now;
+	vector<bool> visited(graph.size(), false);
+
+	ST.push(1);
+	visited[1] = true;
+	while (!ST.empty()) {
+		isEnd = true;
+		now = ST.top();
+		for (int i = 0; i < graph[now].size(); i++) {
+			if (!visited[graph[now][i]]) {
+				ST.push(graph[now][i]);
+				visited[graph[now][i]] = true;
+				isEnd = false;
+				break;
+			}
+		}
+		if (isEnd) ST.pop();
+	}
+
+	for (int i = 1; i < visited.size(); i++)
+		if (!visited[i]) return false;
+
+	return true;
+}
+// 2. 모든 정점의 차수가 짝수인가?
+bool checkOutDegree() {
+	for (int i = 1; i < graph.size(); i++)
+		if (graph[i].size() % 2 == 1) return false;
+	return true;
+}
+
+/*
+4
+0 1 1 1
+1 0 1 0
+1 1 0 1
+1 0 1 0
+*/

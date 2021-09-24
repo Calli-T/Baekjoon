@@ -1,0 +1,87 @@
+#include <vector>
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+bool checkUnited(vector<vector<int>>& graph) {
+	stack<int> ST;
+	bool isEnd;
+	int now;
+	vector<bool> visited(graph.size(), false);
+
+	ST.push(1);
+	visited[1] = true;
+	while (!ST.empty()) {
+		isEnd = true;
+		now = ST.top();
+		for (int i = 0; i < graph[now].size(); i++) {
+			if (!visited[graph[now][i]]) {
+				ST.push(graph[now][i]);
+				visited[graph[now][i]] = true;
+				isEnd = false;
+				break;
+			}
+		}
+		if (isEnd) ST.pop();
+	}
+
+	/*
+	for (int i = 1; i < visited.size(); i++)
+		cout << visited[i] << " ";
+	cout << endl;
+	*/
+	for (int i = 1; i < visited.size(); i++)
+		if (!visited[i]) return 0;
+
+	return 0;
+}
+
+bool checkOutDegree(vector<vector<int>>& graph) {
+	for (int i = 1; i < graph.size(); i++)
+		if (graph[i].size() % 2 == 1) return 0;
+	return 1;
+}
+
+int main(void) {
+	vector<vector<int>> graph;
+	int N;
+	int temp;
+	vector<int> path1;
+	vector<int> path2;
+
+	cin >> N;
+	graph.resize(N + 1);
+	//for (int i = 0; i < N + 1; i++)
+		//graph[i].resize(N + 1);
+
+
+	for (int i = 1; i <= N; i++) {
+		for (int j = 1; j <= N; j++) {
+			cin >> temp;
+			if (temp)
+				graph[i].push_back(j);
+		}
+	}
+
+	/*
+	for (int i = 1; i <= N; i++) {
+		for (int j = 0; j < graph[i].size(); j++) {
+			cout << graph[i][j] << " ";
+		}
+		cout << endl;
+	}
+	*/
+
+	if (!checkUnited(graph) || !checkOutDegree(graph)) {
+		cout << "-1" << endl;
+	}
+	else {
+
+	}
+		
+			
+
+
+	return 0;
+}
