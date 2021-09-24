@@ -17,7 +17,9 @@ void getEuler(int here) {
             adj[there][here]--;
             getEuler(there);
         }
+        cout << "here: " << here << " " << "nxt[here]: " << nxt[here] << endl;
     }
+    if (nxt[here] == 7) cout << "¹«¾ßÈ£" << endl;
     route.push_back(here);
 }
 
@@ -43,6 +45,7 @@ int main() {
             return 0;
         }
     }
+    cout << "Start Point: " << startPoint << endl;
     for (int i = 1; i <= n; i++) nxt[i] = 1;
     getEuler(startPoint);
 
