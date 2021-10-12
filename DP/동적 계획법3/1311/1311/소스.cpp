@@ -42,14 +42,6 @@ int main() {
 
 	cout << DFS(0, 0);
 
-	cout << endl;
-	for (int i = 0; i < N + 1; i++) {
-		for (int j = 0; j < (1 << N); j++) {
-			cout << DP[i][7-j] << " ";
-		}
-		cout << endl;
-	}
-
 	return 0;
 }
 
