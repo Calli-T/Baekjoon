@@ -16,19 +16,31 @@ vector<vector<int>> DP;
 int DFS(int cur, int state) {
 	int& now = DP[cur][state];
 
+	//모든 도시를 방문했을 경우
 	if (state == (1 << N) - 1) {
+		//원래 도시로 돌아가는 길이없다면 INF값을 return하여
+		//ans가 줄어드는 일이 없도로갛ㄴ다
 		if (cost[cur][0] == 0)return INF;
-		else return cost[cur][0];
+		else return cost[cur][0]; // 길이 있다면 원래의 도시로 돌아온다
 	}
+	//DP의 초기화를 -1로 했으므로 기존에 계산했으면 -1이 아니게된다. 이를 return
 	if (now != -1) return now;
 
+	//무한에서 부터 줄여나간다
 	int ans = INF;
+	//각 도시들에 대해
 	for (int i = 0; i < N; i++) {
+		//해당 비트마스크 자리가 0이라면, 즉 방문한 적이 없다면
 		if (!(state & (1 << i))) {
+			// 만약 길이없다면 무시
 			if(cost[cur][i] == 0 ) continue;
 			ans = min(ans, DFS(i, state | (1 << i)) + cost[cur][i]);
+			//그렇지 않을경우 최소값을 계산 ans의 비교대상은
+			//현재 도시에서 해당도시로 가는비용에 해당 도시에서 남은 순회를 도는 비용
 		}
 	}
+
+	//최소화된 ans를 return
 	return now = ans;
 }
 

@@ -2,3 +2,4 @@
 1937 - DP랑 섞였다
 9466 - 그래프이론과 섞였다 http://melonicedlatte.com/algorithm/2018/08/26/232029.html
 14890 - 복잡다
+1086 - 플래 비트마스크DP

@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+#define LL long long
+
+using namespace std;
+
+int N, K;
+vector<string> arr;
+vector<vector<int>> DP;
+vector<vector<int>> remain;
+
+//덜작성했다
+//인자로를 접두로 붙을 나머지(혹은 0)과 숫자위치이다
+int getRemain(int prefix, int location) {
+	if (remain[prefix][location] != -1) remain[prefix][location];
+	else {
+
+	}
+	return 0;
+}
+
+int main(void) {
+	string temp;
+
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		cin >> temp;
+		arr.push_back(temp);
+	}
+	cin >> K;
+	//DP배열 크기 설정, DP[N][state]는 N개를 집었을 때 상태가 state이면 나머지
+	DP.resize(N + 1);
+	for (int i = 0; i <= N; i++)
+		DP[i].resize(1 << N, -1);
+	//나머지배열 설정
+	remain.resize(K);
+	for (int i = 0; i < K; i++)
+		remain[i].resize(N, -1);
+
+	//getRemain(0, "33");
+
+	return 0;
+}
+
+// 일단 유틸리티용 함수로, 팩토리얼을 반환해주는 함수와
+// string으로 받은 수를 int로 받은 수로 나눠서 나머지를 반환해주는 함수가 필요하다
+
+//비트마스크로 하나씩 먹일 수는 있으나, 앞에서부터? 뒤에서부터?
+//앞에서부터 한다면 나머지를  함수의 인자로 넘겨 주어 뒷 string으로 붙일 수 있다
+
+// 1 <= K <= 100이므로, 커팅은 3자리씩하는것이 맞을것
+// K개만큼의 나머지가 있어야한다
+// ex) K = 3이고 343240은 343과 240으로 끊어 처리하며
+// 343%3 = 1이므로 remain[1][240]에 1240%3 = 1이
+// 저장이 되어있던지, 없으면 저장을 하던지 해야한다
+
+// 혹은 나머지는 앞의 수의 나머지에 뒤의 수를 붙여 나머지를 구해 뒤로 전하는것임으로
+// 시작할 때 remain[K][N]의 [0][N]인 부분을 싹계산하는것도 ㄱㅊ
+// 그 다음부터는 remain[앞에 붙을 0~K-1까지의 숫자][뒤에붙을 숫자]에
+// 값이 -1(미리초기화된값이다)이면 계산해서 놓고, 아니면 가져와서 쓰는 방법이 있다
+
+// 비트마스크 DP를 진행할 때 앞에서부터 차례차례 나머지를 계산해 뒤로 넘긴다
+// 계산의 끝에서 나누어 떨어지는지 판별한다
+// 함수에서 depth는 필요할지 안할지 모르겠고, state는 필요하며
+// 시간 절약을 위해 끝에서 판별하면 2^50번 판별해야한다
+// 특정 분기점에서 얼마나 가능한지를 return하는 함수를 만들어야한다
+// 정확히는 M개를 집었을 때 N-M개로 딱떨어지는 순열이 몇개인지를 찾아야한다
