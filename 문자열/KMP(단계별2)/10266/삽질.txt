@@ -1,0 +1,244 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+#define VEC vector<int>&
+
+vector<int> getPi(VEC gap);
+void clockGen(VEC clock1, VEC clock2, int n);
+void gapGen(VEC gap1, VEC gap2, VEC clock1, VEC clock2, int n);
+
+vector<int> KMP(VEC gap, VEC keyword, int key_num, VEC pi) {
+	int j = 0;
+	vector<int> ans;
+	int len = gap.size();
+
+	for (int i = 0; i < len; i++) {
+		while (j > 0 && gap[i] != keyword[j])
+			j = pi[j - 1];
+
+		if (gap[i] == keyword[j]) {
+			if (j == key_num - 1) {
+				ans.push_back(i - j);
+				j = pi[j];
+			}
+			else
+				j++;
+		}
+	}
+
+	return ans;
+}
+
+bool clockChecker(VEC gap1, VEC gap2) {
+	//찾을 단어들의 pi배열
+	vector<int> pi = getPi(gap1);
+	vector<int> ans;
+	int len = gap2.size();
+	int sub_len = 0;
+
+	//하나씩 늘려가며 최대한 겹치는 부분을 찾는다
+	for (int n = 1; n < gap1.size(); n++) {
+		int j = 0;
+		vector<int> temp;
+
+		//for문 길이 체크 - 무야호
+		for (int i = 0; i < len; i++) {
+			while (j > 0 && gap2[i] != gap1[j])
+				j = pi[j - 1];
+
+			if (gap2[i] == gap1[j]) {
+				if (j == n - 1) {
+					temp.push_back(i - j);
+					j = pi[j];
+				}
+				else {
+					j++;
+				}
+			}
+		}
+		//for문 길이 체크 - 무야호
+
+		if (temp.size()) {
+			ans.clear();
+			for (int i = 0; i < temp.size(); i++) {
+				ans.push_back(temp[i]);
+				//cout << temp[i] << endl;
+			}
+		}
+		else {
+			sub_len = n - 1;
+			break;
+		}
+	
+	}
+
+	
+	for (int i = 0; i < ans.size(); i++)
+		cout << ans[i] << " ";
+	cout << endl;
+	cout << sub_len;
+	cout << endl;
+	
+	cout << ans[ans.size() - 1] - 1 << endl;
+
+	return false;
+}
+
+int main(void) {
+	int n;
+	vector<int> clock1;
+	vector<int> clock2;
+	vector<int> gap1;
+	vector<int> gap2;
+	vector<int> pi1;
+	vector<int> pi2;
+
+	cin >> n;
+	clockGen(clock1, clock2, n);
+	gapGen(gap1, gap2, clock1, clock2, n);
+
+	if (clockChecker(gap1, gap2)) {
+		cout << "possible" << '\n';
+	}
+	else
+		cout << "impossible" << '\n';
+
+	return 0;
+}
+
+
+vector<int> getPi(VEC gap) {
+	int j = 0;
+	int len = gap.size();
+	vector<int> pi(len, 0);
+
+	for (int i = 1; i < len; i++) {
+		while (j > 0 && gap[i] != gap[j])
+			j = pi[j - 1];
+
+		if (gap[i] == gap[j])
+			pi[i] = ++j;
+	}
+
+	/*
+	for (int i = 0; i < len; i++)
+		cout << pi[i] << " ";
+	cout << endl;
+	*/
+
+	return pi;
+}
+
+void clockGen(VEC clock1, VEC clock2, int n) {
+	clock1.resize(n, 0);
+	clock2.resize(n, 0);
+
+	for (int i = 0; i < n; i++)
+		cin >> clock1[i];
+	for (int i = 0; i < n; i++)
+		cin >> clock2[i];
+
+	sort(clock1.begin(), clock1.end());
+	sort(clock2.begin(), clock2.end());
+}
+
+void gapGen(VEC gap1, VEC gap2, VEC clock1, VEC clock2, int n) {
+	gap1.resize(n, 0);
+	gap2.resize(n, 0);
+
+	for (int i = 0; i < n - 1; i++) {
+		gap1[i] = clock1[i + 1] - clock1[i];
+		gap2[i] = clock2[i + 1] - clock2[i];
+	}
+	gap1[n - 1] = 360000 - clock1[n - 1] + clock1[0];
+	gap2[n - 1] = 360000 - clock2[n - 1] + clock2[0];
+
+	/*
+	for (int i = 0; i < n; i++)
+		cout << gap1[i] << " ";
+	cout << endl;
+	for (int i = 0; i < n; i++)
+		cout << gap2[i] << " ";
+	cout << endl;
+	*/
+
+}
+
+/*
+pi1 = getPi(gap1);
+	pi2 = getPi(gap2);
+
+	for (int i = 0; i < n; i++)
+		cout << pi1[i] << " ";
+	cout << endl;
+	for (int i = 0; i < n; i++)
+		cout << pi2[i] << " ";
+	cout << endl;
+*/
+
+// 시계 2에서 시계 1의 갭을 조금씩 뜯어다가 찾자
+
+/*
+sort(clock1.begin(), clock1.end());
+	sort(clock2.begin(), clock2.end());
+
+	for (int i = 0; i < n; i++) {
+		cout << clock1[i] << " ";
+	}
+	cout << endl;
+	for (int i = 0; i < n; i++) {
+		cout << clock2[i] << " ";
+	}
+*/
+
+//문제설명
+//시계사진 2장에
+//각 사진에 0.000도부터 359.999도까지 360,000개 사이
+//20,000의 바늘이 흩어져있는데
+//돌려서 같은 것으로 볼 수 있을것인가
+
+//문자열 찾기 알고리즘의 응용이라고 한다???
+
+// 조건1. 바늘각도의 순서가없다
+// 조건2. 같은 각도가 두 번 주어지지 않는다
+
+/*
+각 시계바늘을 정렬하고
+바늘 사이 간격을 kmp의 대상으로 잡은다음
+시계 2의 간격을 시계 1의 간격으로 최대한 일치하는 만큼 찾는다
+
+(중복이 있다면, 어떻게 처리할 것인가)
+6
+1 2 3 5 6 7
+1 2 3 7 8 9
+과 같이 gap이
+1 1  2 1 1 399994
+1 1  4 1 1 399992
+인경우 gap 일치가 1 1 2군데가 2번 나오게 된다
+
+gap이 
+1 1  2 1 1 399994와
+399994 1 1 2 1 1일 수 있지 않은가?
+
+1 399994 1 1  2 1는 어떻게 처리하는가
+2개이상 일치하면 아니라고 확정 지을 수 있는가?
+
+1 1 399994 1 1 2/
+
+잘라 붙이는걸 모든 장소에서 모두 시행하는것을 재귀로 처리한다음
+OR연산으로 답이 나오는지 찾을 수 있을것이다
+
+하나만 골라잡고 뒤를 이어붙이는 식으로도 가능할 것이다
+ans의 끝값을 골라, 그 전 값을 이어 붙일 수 있을까
+
+대상: 399994 1 1 2 1 1
+찾기: (1 1) 399994 1 1 2
+
+결과: 1 1  399994 1 1 2
+
+무조건 한 번의 이어붙이기로 가능할것인가?
+
+*/

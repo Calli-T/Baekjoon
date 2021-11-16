@@ -1,0 +1,93 @@
+#include iostream
+#include vector
+#include set
+#include map
+
+using namespace std;
+
+vectorvectorstring underground;
+setstring food;
+mapstring, int matchFood;
+int N;
+
+struct Trie {
+	Trie ch[1000];
+	bool end;
+
+	Trie() {
+		end = false;
+		for (int i = 0; i  1000; i++)
+			ch[i] = NULL;
+	}
+	~Trie() {
+		for (int i = 0; i  1000; i++)
+			if (ch[i])delete ch[i];
+	}
+
+	void insert(string s) {
+		if (!s.empty()) {
+			end = true;
+			return;
+		}
+		
+	}
+};
+
+void setUnderground() {
+	int number = 0;
+	string temp;
+	int j;
+
+	cin  N;
+	underground.resize(N);
+	for (int i = 0; i  N; i++) {
+		cin  j;
+
+		while (j--) {
+			cin  temp;
+			underground[i].push_back(temp);
+		}
+	}
+
+	for (int i = 0; i  N; i++) {
+		for (int j = 0; j  underground[i].size(); j++)
+			food.insert(underground[i][j]);
+	}
+
+	for (auto it = food.begin(); it != food.end(); it++)
+		matchFood.insert({ it, number++ });
+}
+
+int main(void) {
+	
+	setUnderground();
+
+	return 0;
+}
+
+for (int i = 0; i  N; i++) {
+		for (int j = 0; j  floor[i].size(); j++)
+			cout  floor[i][j]   ;
+		cout  'n';
+	}
+
+	for (auto it = food.begin(); it != food.end(); it++)
+			cout  it   ;
+		cout  'n';
+
+		for (auto it = matchFood.begin(); it != matchFood.end(); it++)
+				cout  it-first     it-second 'n';
+			cout  'n';
+
+// 층은 최대 1000개층
+// 각 층의 정보는 15개까지
+// 최대 먹이 정보수는 15000개 이다
+// find함수를 구현할 이유가 없다
+// insert 함수에서, 문자열로 넣는 경우에는
+// 문자열의 끝 '\0'를 인식하고 멈출 수 있다
+// 14725문제에서, 한 줄로 보낸 정보의 경우
+// DFS형식으로 막힐 때까지 한번 쭉 보낸 경우의 경로를 의미한다
+// B - A 순으로 찾았다면, B/A를 insert하고
+// A - B - C - D를 찾았다면, A/B/C/D를 insert한다
+// !*s 대신 i, j를 보내 food[i][j]를 찾게 한다
+//j가 food[i]만큼의 사이즈가 되었다면, 끝인것으로 간주한다
