@@ -1,0 +1,154 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Trie {
+	Trie* ch[26];
+	bool end;
+
+	Trie() {
+		for (int i = 0; i < 26; i++) ch[i] = NULL;
+		end = false;
+	}
+
+	~Trie() {
+		for (int i = 0; i < 26; i++) if (ch[i]) delete ch[i];
+	}
+
+	void insert(const char* s) {
+		if (!*s) {
+			end = true;
+			return;
+		}
+		int now = *s - 'a';
+		if (!ch[now]) ch[now] = new Trie;
+		ch[now]->insert(s + 1);
+	}
+	bool find(const char* s) {
+		if (!*s) {
+			if (end) return true;
+			return false;
+		}
+		int now = *s - 'a';
+		if (!ch[now]) return false;
+		return ch[now]->find(s + 1);
+	}
+
+	bool hasOnlyLatter() {
+		bool hasOne = false;
+		for (int i = 0; i < 26; i++) {
+			if (ch[i]) {
+				if (!hasOne) hasOne = true;
+				else return false;
+			}
+		}
+		return hasOne;
+	}
+	int getOnlyLatter() {
+		int onlyLatter = -1;
+		for (int i = 0; i < 26; i++) {
+			if (ch[i]) {
+				if (onlyLatter < 0) onlyLatter = i;
+				else return -1;
+			}
+		}
+		return onlyLatter;
+	}
+	
+	int countInput(const char* s) {
+		if (!*s) {
+			return 0;
+		}
+		int now = *s - 'a';
+		if (!hasOnlyLatter()) {
+			return 1+ ch[now]->countInput(s + 1);
+		}
+		else {
+			return ch[now]->countInput(s + 1);
+		}
+		
+		/*if (!ch[now]) return false;
+		return ch[now]->find(s + 1);*/
+	}
+
+};
+
+int N;
+vector<string> dictionary;
+Trie* root;
+
+int main(void) {
+
+	while (true) {
+		//사전 초기화
+		dictionary.clear();
+		
+		cin >> N;
+		dictionary.resize(N);
+		for (int i = 0; i < N; i++)
+			cin >> dictionary[i];
+
+		//루트노드생성
+		root = new Trie;
+		//트라이 구성
+		for (int i = 0; i < N; i++)
+			root->insert(dictionary[i].c_str());
+
+		for (int i = 0; i < N; i++) {
+			Trie* temp = root->ch[dictionary[i][0]];
+			string substr = dictionary[i].substr(1);
+			//cout << "substr: " << substr << '\n';
+			cout <<temp->countInput(substr.c_str()) << endl;
+		}
+		
+		//루트노드 삭제
+		delete root;
+	}
+
+
+
+	return 0;
+}
+
+//간단히말해서, 입력을 뭐라도 하면
+//그걸 접두사로 하는 단어들이 그 다음이 모두 겹칠경우
+//그걸 생략하고 자동입력해주는 모듈이다
+// hello, hello
+// h를 친시점에서 e가, l을 친 시점에서 l이 자동으로 튀어나온다
+
+// 일단 무지성 트라이 자료구조부터 만들고 생각하자
+
+//테스트
+//cout << root->ch[7]->getOnlyLatter() << endl;
+
+//해당함수는 해당 노드에 자식노드가 1개임을 확인한다
+//0개나 2개이상은 얄짤없이 false
+//cout << root->hasOnlyLatter() << endl;
+
+
+//입력횟수는 find 함수 개조
+//일단 단어가 없을 일이 없음, if(!*s)의 false반환 필요x
+/*재귀식으로 합을 내서 반환, 1에서 시작
+0. 1에서 시작하려면, root에서 시작하는게 아니고
+시작위치를'root->해당 첫글자'로 둘 필요가 있다
+1. 글자의 끝, 즉 '\0'문자라면 0을 반환
+2. 끝이 아니라면 해당 문자의 자식노드 개수가 1개인지 살펴봄
+3. 자식노드의 개수가 1개가 아니라면,
+for문으로 노드를 싹 훑은걸 리턴해서 반환
+자식 노드의 개수가 1개라면, 해당 노드를 매개변수로 재귀
+*/
+
+
+/* 오답 1
+int countInput(const char *s) {
+		if (!*s) {
+			return 0;
+		}
+		int onlyLetter = getOnlyLatter();
+		if (onlyLetter == - 1) {
+			return countInput(s + 1);
+		} else
+			return 1 + countInput(s + 1);
+	}
+*/
