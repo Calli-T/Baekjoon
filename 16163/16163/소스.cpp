@@ -41,7 +41,7 @@ int main(void) {
 	}
 
 	for (int i = 0; i < A.size(); i++) {
-			cout << A[i] << " ";
+		ans += (A[i] + 1) / 2;
 	}
 		
 
@@ -49,5 +49,3 @@ int main(void) {
 
 	return 0;
 }
-
-//https://devlibrary00108.tistory.com/269
