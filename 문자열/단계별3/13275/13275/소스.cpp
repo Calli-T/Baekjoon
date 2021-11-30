@@ -22,8 +22,7 @@ int main() {
 		S.push_back(temp[i]);
 		S.push_back('#');
 	}
-	//}
-		//cout << S;
+	
 	A.resize(S.size(), 0);
 	for (int i = 1; i < A.size(); i++) {
 		if (i > r) A[i] = 0;
@@ -44,15 +43,7 @@ int main() {
 
 		ans = max(ans, A[i]);
 	}
-	cout << ans;// << '\0';
-	//맞왜틀?
-
-	/*
-	cout << endl;
-	for (int i = 0; i < A.size(); i++)
-		cout << A[i] << " ";
-	*/
-	
+	cout << ans;
 
 	return 0;
 }
@@ -94,3 +85,15 @@ int r = 0;
 
 		ans = max(ans, A[i]);
 */
+
+// << '\0';
+	//맞왜틀?
+
+	/*
+	cout << endl;
+	for (int i = 0; i < A.size(); i++)
+		cout << A[i] << " ";
+	*/
+
+	//}
+			//cout << S;

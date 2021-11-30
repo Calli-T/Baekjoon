@@ -44,7 +44,6 @@ int main(void) {
 		ans += (A[i] + 1) / 2;
 	}
 		
-
 	cout << ans;
 
 	return 0;
