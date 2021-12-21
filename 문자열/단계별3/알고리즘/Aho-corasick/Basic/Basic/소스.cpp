@@ -81,6 +81,50 @@ void search(Trie *root) {
 	if (result) cout << "YES"; else cout << "NO"; cout << '\n';
 }
 
+void advancedSearch(Trie* root) {
+	Trie* cur = root;
+	char str[10001];
+	cin >> str;
+	bool result = false;
+	int i;
+	int length = 0;
+
+	for (i = 0; str[i]; i++) {
+		int next = str[i] - 'a';
+
+		while (cur != root && !cur->ch[next]) {
+			cur = cur->fail;
+		}
+		if (cur->ch[next]) {
+			cur = cur->ch[next];
+			length++;
+		}
+		else
+			length = 0;
+
+		if (cur->isEnd) {
+			result = true;
+			break;
+		}
+	}
+
+	if (result) {
+		cout << "YES";
+		cout << " 위치: " << i - length + 1; // i;
+		cout << ", 길이: " << length;
+		
+		cout << ", 단어: ";
+		for (int st = 0; st < length; st++) {
+			cout << str[i - length + 1 + st];
+		}
+	}
+	else
+		cout << "NO";
+
+	cout << '\n';
+	
+}
+
 int main(void) {
 	int N, M;
 	char str[10001];
@@ -96,27 +140,8 @@ int main(void) {
 
 	cin >> M;
 	for (int i = 0; i < M; i++) {
-		search(root);
-		/*cin >> str;
-		Trie* cur = root;
-		bool result = false;
-
-		for (int c = 0; str[c]; c++) {
-			int next = str[c] - 'a';
-			//일치할 때까지, 혹은 아무것도 없을 때까지 fail탄다
-			while (cur != root && !cur->ch[next])
-				cur = cur->fail;
-			//일치하면 성공링크 타고 내려간다
-			if (cur->ch[next]) cur = cur->ch[next];
-
-			if (cur->isEnd) {
-				result = true;
-				break;
-			}
-		}
-		if (result) cout << "YES";
-		else cout << "NO";
-		cout << '\n';*/
+		//search(root);
+		advancedSearch(root);
 	}
 
 	delete root;
@@ -131,4 +156,52 @@ int main(void) {
 2. 일치하거나 root갈 때까지 fail탄다
 3. 일치하면 성공링크 탄다
 4. output이면 break걸고 존재함
+*/
+
+/*
+검색함수
+문자열 작성 및 전체 순회
+cur는 부모의 fail을 미리 쭉탐(일치하는거 맞춤)
+root가 아니고, cur->ch[next]가 존재하지 않을 때까지 즉 접두어에서 다음 글자가, 현재 글자가 나오는 때까지 가야함
+cur->ch[next]존재하면 따라 내려가고, 거기서 output이면 존재한다는 뜻이니 멈추고 cout
+
+*/
+
+/*
+3
+www
+woo
+jun
+3
+myungwoo
+hongjun
+dooho
+
+4
+www
+woo
+jun
+ooh
+3
+myungwoo
+hongjun
+dooho
+
+3
+www
+woo
+jun
+3
+myuwongwoo
+hongjun
+dooho
+
+3
+www
+woo
+jun
+3
+myuwoogwoo
+hongjun
+dooho
 */

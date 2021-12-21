@@ -42,6 +42,7 @@ void makeFail(Trie* root) {
 		//해당 노드의 모든 자식노드에 대해
 		for (int i = 0; i < 26; i++) {
 			Trie* next = cur->go[i];
+			//자식노드가 생성된적없다면 다음으로 넘어감
 			if (!next) continue;
 
 			//루트의 fail은 root
@@ -85,6 +86,8 @@ int main() {
 	//fail 함수 작성
 	makeFail(root);
 
+	//int loc = 0;
+	//검색
 	cin >> M;
 	for (int i = 0; i < M; i++) {
 		cin >> str;
@@ -100,6 +103,7 @@ int main() {
 
 			if (cur->output) {
 				result = true;
+				//loc = c;
 				break;
 			}
 		}
@@ -107,6 +111,8 @@ int main() {
 		if (result) cout << "YES";
 		else cout << "NO";
 		cout << '\n';
+
+		//cout << " 위치는" << loc << " " << '\n';
 	}
 
 	delete root;
