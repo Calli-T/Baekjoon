@@ -12,8 +12,8 @@ struct loc {
 	int c;
 };
 
-int dr[] = { 0, 0 , 1, -1 };
-int dc[] = { 1,  -1, 0, 0 };
+int dr[] = { 1, -1 , 0, 0 };
+int dc[] = { 0,  0, 1, -1 };
 
 int N, M, F; //필드 크기, 손님수, 연료
 vector<vector<int>> field;
@@ -38,7 +38,7 @@ void setField() {
 	cin >> N >> M >> F;
 	row.resize(N + 2, 1);
 	field.resize(N + 2, row);
-	
+
 	resetVisited();
 
 	for (int i = 1; i <= N; i++) {
@@ -71,6 +71,7 @@ void printField() {
 int BFS(loc& now, int pur) {
 	queue<loc> Q;
 	int size = 1;
+	bool isEnd;
 
 	resetVisited();
 	Q.push(now);
@@ -79,13 +80,26 @@ int BFS(loc& now, int pur) {
 		auto cur = Q.front();
 		Q.pop();
 
+		cout << cur.r << " " << cur.c << '\n';
+
+		isEnd = false;
 		for (int i = 0; i < 4; i++) {
 			loc next;
 			next.r = now.r + dr[i];
 			next.c = now.c + dc[i];
 
-			
+			cout << visited NEXT << " " << field NEXT << '\n';
+			if (!visited[next.r][next.c] && field NEXT != 1) {
+				visited NEXT = true;
+				Q.push(next);
+
+				if (field NEXT == pur) {
+					isEnd = true;
+				}
+			}
 		}
+
+		if (isEnd) break;
 	}
 
 	return 0;
@@ -106,7 +120,33 @@ int main(void) {
 
 	setField();
 	printField();
-	cout << simulate();
+	simulate();
 
 	return 0;
 }
+
+/*
+6 3 15
+0 0 1 0 0 0
+0 0 1 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 1 0
+0 0 0 1 0 0
+6 5
+2 2 5 6
+5 4 1 6
+4 2 3 5
+
+6 3 15
+0 0 1 0 0 0
+0 0 1 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 1 0
+0 0 0 1 0 0
+1 4
+2 2 5 6
+5 4 1 6
+4 2 3 5
+*/

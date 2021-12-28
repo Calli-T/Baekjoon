@@ -2,21 +2,36 @@
 #include <queue>
 #include <vector>
 #include <algorithm>
-//
+
 using namespace std;
 
+int ACGT[4] = { 0 ,2 , 6, 19 };
+char RNA[1000001];
+
+int toNumber(char ch)
+{
+	switch (ch)
+	{
+	case 'A': return 0;
+	case 'T': return 1;
+	case 'G': return 2;
+	case 'C': return 3;
+	}
+	return -1;
+}
+
 struct Trie {
-	Trie* ch[26];
+	Trie* ch[4];
 	Trie* fail;
 	bool isEnd;
 
 	Trie() {
-		for (int i = 0; i < 26; i++) ch[i] = NULL;
+		for (int i = 0; i < 4; i++) ch[i] = NULL;
 		fail = NULL;
 		isEnd = false;
 	}
 	~Trie() {
-		for (int i = 0; i < 26; i++) if (ch[i]) delete ch[i];
+		for (int i = 0; i < 4; i++) if (ch[i]) delete ch[i];
 	}
 
 	void insert(const char* key) {
@@ -24,7 +39,8 @@ struct Trie {
 			isEnd = true;
 			return;
 		}
-		int next = *key - 'A';
+		//int next = *key - 'A';
+		int next = toNumber(*key);
 		if (!ch[next]) ch[next] = new Trie;
 		ch[next]->insert(key + 1);
 	}
@@ -38,7 +54,7 @@ void getFail(Trie* root) {
 		Trie* cur = Q.front();
 		Q.pop();
 
-		for (int i = 0; i < 26; i++) {
+		for (int i = 0; i < 4; i++) {
 			Trie* next = cur->ch[i];
 			if (!next) continue;
 
@@ -65,7 +81,7 @@ int search(Trie* root, string &DNA, int start, int M) {
 	int i;
 	
 	for (i = start; i < DNA.size(); i++) {
-		int next = DNA[i] - 'A';
+		int next = toNumber(DNA[i]);
 
 		while (cur != root && !cur->ch[next])
 			cur = cur->fail;
@@ -84,7 +100,6 @@ int search(Trie* root, string &DNA, int start, int M) {
 
 int makeUsWhole() {
 	int N, M;
-	string DNA;
 	string blackMarker;
 	//string temp;
 	string mutant;
@@ -93,7 +108,8 @@ int makeUsWhole() {
 	int ans = 0;
 
 	cin >> N >> M;
-	cin >> DNA;
+	cin >> RNA;
+	string DNA(RNA);
 	cin >> blackMarker;
 
 	redMarker->insert(blackMarker.c_str());
@@ -128,6 +144,10 @@ int makeUsWhole() {
 }
 
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
 	vector<int> ans;
 	int T;
 
